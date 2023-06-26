@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+</head>
+<body>
+  <h1>Post</h1>
+
+  <form id="myForm" type="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="username">username:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="email">email:</label>
+    <input type="text" id="email" name="email" required>
+
+    <label for="password">password:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+  
+      var form = event.target;
+      var formData = new FormData(form);
+  
+      var registrationData = {
+        name: formData.get("name"),
+        username: formData.get("username"),
+        email: formData.get("email"),
+        password: formData.get("password")
+      };
+  
+      var request = new XMLHttpRequest();
+      request.open("POST", "http://localhost:8080/api/auth/register");
+  
+      request.setRequestHeader("Content-Type", "application/json");
+  
+      request.onreadystatechange = function() {
+        if (request.readyState === 4 && request.status === 200) {
+          var response = JSON.parse(request.responseText);
+          console.log(response); // Handle the response from the API
+        }
+      };
+      if(registrationData == null){
+        alert('Invalid...');
+      }
+      request.send(JSON.stringify(registrationData));
+    });
+  </script>
+</body>
+</html>
